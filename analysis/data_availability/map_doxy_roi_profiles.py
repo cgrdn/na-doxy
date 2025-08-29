@@ -40,6 +40,9 @@ for region in Path('regions').glob('*.csv'):
         legend_title=f'{param} data mode',
         markersize=5,
     )
+    
+    # title
+    ax.set_title(f"Data mode for '{param_info['prefLabel']}' ({param})\n{ix.N_MATCH} profiles ({df.wmo.unique().shape[0]} floats) from the {ix.convention_title}")
 
     fig.savefig(f'figures/{region.name.replace(".csv", "")}_doxy_profiles_map.png', bbox_inches='tight', dpi=350)
     plt.close(fig)
