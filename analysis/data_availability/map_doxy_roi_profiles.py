@@ -15,7 +15,7 @@ param = 'DOXY'
 reftbl = argopy.ArgoNVSReferenceTables().tbl('R03')
 param_info = reftbl[reftbl['altLabel']==param].iloc[0]
 
-for region in Path('regions').glob('*.csv'):
+for region in Path('../../meta/regions').glob('*.csv'):
     coords = pd.read_csv(region)
     polygon = shapely.Polygon(coords)
 
@@ -25,7 +25,7 @@ for region in Path('regions').glob('*.csv'):
         'params':param,
     }).to_dataframe()
     # extract data mode
-    df['variables'] = df["parameters"].apply(lambda x: x.split())
+    df['variables'] = df['parameters'].apply(lambda x: x.split())
     df[f'{param}_data_mode'] = df.apply(lambda x: x['parameter_data_mode'][x['variables'].index(param)] if param in x['variables'] else '', axis=1)
 
     # more specific polygon subset

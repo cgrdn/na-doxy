@@ -1,5 +1,8 @@
 
+import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+
 import argopy
 
 # load BGC index
@@ -19,20 +22,13 @@ df = ix.query.compose({
 # extract data mode
 df['variables'] = df['parameters'].apply(lambda x: x.split())
 df[f'{param}_data_mode'] = df.apply(lambda x: x['parameter_data_mode'][x['variables'].index(param)] if param in x['variables'] else '', axis=1)
+df['year'] = df['date'].apply(lambda x: x.year)
 
-# plot trajectories, color by data mode
-fig, ax, _ = argopy.plot.scatter_map(
-    df,
-    hue=f'{param}_data_mode',
-    cmap='data_mode',
-    traj=True,
-    legend_title=f'{param} data mode',
-    markersize=5,
-)
+# plot distributions
+g = sns.histplot(df, x='year', hue=f'{param}_data_mode', multiple='stack', bins=np.arange(2000, 2026)+0.5)
+g.figure.savefig('figures/year_histplot.png', bbox_inches='tight', dpi=350)
+plt.close(g.figure)
 
-# title
-ax.set_title(f"Data mode for '{param_info['prefLabel']}' ({param})\n{ix.N_MATCH} profiles ({df.wmo.unique().shape[0]} floats) from the {ix.convention_title}")
-
-# save figure
-fig.savefig('figures/na_ocean_doxy_profiles_map.png', bbox_inches='tight', dpi=350)
-plt.close(fig)
+g = sns.histplot(df, x='latitude', hue=f'{param}_data_mode', multiple='stack', bins=np.arange(20, 95, 5))
+g.figure.savefig('figures/latitude_histplot.png', bbox_inches='tight', dpi=350)
+plt.close(g.figure)
