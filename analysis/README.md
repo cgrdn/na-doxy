@@ -26,4 +26,4 @@ Creating the following timeseries also over the last 5 years:
 
 TS diagram: 
 
-![SS TS Diagram with DOXY](initial_data_vis/figures/scotian_shelf_timeseries.png)
+![SS TS Diagram with DOXY](initial_data_vis/figures/scotian_shelf_doxy_tsdiagram.png)
