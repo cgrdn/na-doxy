@@ -16,10 +16,14 @@ A few areas of interest have been defined to make an initial analysis more manag
 
 ![Scotian Shelf map](data_availability/figures/scotian_shelf_doxy_profiles_map.png)
 
-Over the past 5 years there are x profiles from x floats:
+Since 2020 there are 5587 profiles from 116 floats:
 
 ![SS DOXY profiles](initial_data_vis/figures/scotian_shelf_doxy_profiles.png)
 
 Creating the following timeseries also over the last 5 years:
 
 ![SS physics and DOXY timeseries](initial_data_vis/figures/scotian_shelf_timeseries.png)
+
+TS diagram: 
+
+![SS TS Diagram with DOXY](initial_data_vis/figures/scotian_shelf_timeseries.png)

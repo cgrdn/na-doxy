@@ -45,23 +45,25 @@ for region in Path('../../meta/regions').glob('scotian*.csv'):
     
     profiles = profiles.reset_index()
 
+    good_data = (profiles.DOXY_QC < 4) & ((profiles.TEMP_QC.isin([1, 2])) & (profiles.PSAL_QC.isin([1, 2])))
+
     fig, axes = plt.subplots(1, 3, sharey=True)
     g = sns.lineplot(
-        data=profiles.loc[profiles.TEMP_QC.isin([1, 2])], x='TEMP', y='PRES', 
+        data=profiles.loc[good_data], x='TEMP', y='PRES', 
         hue='PLATFORM_NUMBER', units='CYCLE_NUMBER', 
         palette=sns.dark_palette('crimson', n_colors=n_floats), alpha=0.7,
         orient='y', estimator=None, legend=False,
         ax=axes[0]
     )
     g = sns.lineplot(
-        data=profiles.loc[profiles.PSAL_QC.isin([1, 2])], x='PSAL', y='PRES', 
+        data=profiles.loc[good_data], x='PSAL', y='PRES', 
         hue='PLATFORM_NUMBER', units='CYCLE_NUMBER', 
         palette=sns.dark_palette('seagreen', n_colors=n_floats), alpha=0.7,
         orient='y', estimator=None, legend=False,
         ax=axes[1]
     )
     g = sns.lineplot(
-        data=profiles.loc[profiles.DOXY_QC < 4], x='DOXY', y='PRES', 
+        data=profiles.loc[good_data], x='DOXY', y='PRES', 
         hue='PLATFORM_NUMBER', units='CYCLE_NUMBER', 
         palette=sns.dark_palette('dodgerblue', n_colors=n_floats), alpha=0.7,
         orient='y', estimator=None, legend=False,
@@ -70,14 +72,13 @@ for region in Path('../../meta/regions').glob('scotian*.csv'):
 
     axes[0].set_ylim((2050, -50))
     axes[1].set_xlim((30, 38))
-    axes[2].set_xlim((180, 420))
+    axes[2].set_xlim((80, 420))
 
     axes[1].set_title(f"Profiles of {param_info['prefLabel']} ({param})\n{ix.N_MATCH} profiles ({n_floats} floats) from the {ix.convention_title}")
     fig.savefig(f'figures/{region.name.replace(".csv", "")}_doxy_profiles.png', dpi=350, bbox_inches='tight')
     plt.close(fig)
 
     fig, axes = plt.subplots(3, 1, sharex=True)
-    good_data = (profiles.DOXY_QC < 4) & ((profiles.TEMP_QC.isin([1, 2])) & (profiles.PSAL_QC.isin([1, 2])))
     surf = 50
     surface = profiles.loc[(profiles.PRES < surf) & (good_data)]
 
@@ -86,7 +87,7 @@ for region in Path('../../meta/regions').glob('scotian*.csv'):
     sns.scatterplot(data=surface, x='TIME', y='DOXY', hue='PLATFORM_NUMBER', palette=sns.dark_palette('dodgerblue', n_colors=n_floats), alpha=0.7, legend=False, ax=axes[2])
 
     axes[1].set_ylim((30, 38))
-    axes[2].set_ylim((180, 420))
+    axes[2].set_ylim((80, 420))
 
     axes[0].set_title(f"Timeseries for the top {surf}m of {param_info['prefLabel']} ({param})\n{ix.N_MATCH} profiles ({df.wmo.unique().shape[0]} floats) from the {ix.convention_title}")
     fig.savefig(f'figures/{region.name.replace(".csv", "")}_timeseries.png', dpi=350, bbox_inches='tight')
