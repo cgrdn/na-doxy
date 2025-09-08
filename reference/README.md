@@ -1,3 +1,20 @@
+## Notes
+
+### Ito et al. (2024)
+
+"Mapping Dissolved Oxygen Concentrations by Combining
+Shipboard and Argo Observations Using Machine Learning Algorithms."
+
+- I like the inclusion of with/without Argo - is both an interesting question and a good way to showcase the value of the program.
+- Ship bottle and CTD data from WOD18.
+- Observations binned into 1 deg x 1 deg boxes. Defined on 47 depth levels from 0-1000m (WOD standard). Argo data mapped onto this same grid field. 
+- ML _predictand_ is oxygen concentration. ML _predictors_ are absolute salinity, conservative temperature, pressure, potential density, buoyancy frequency, and time/location/month. 
+- Both neural network and random forest algorithms are used through Scikit-learn (v. 1.3)
+- Random 80%/20% learning/validation data sets. Also used Decadal Group K-folds method for validation (DKCV). 
+- In DKCV, final "decade" is actually 15 years, effectively encompassing almost all of the Argo-O2 era. Nice for evaluation of the Argo program. 
+
+## References
+
 Addey, Charles Izuma. 2022. “Using Biogeochemical Argo Floats to
 Understand Ocean Carbon and Oxygen Dynamics.” *Nature Reviews Earth &
 Environment* 3 (11): 739–39.
